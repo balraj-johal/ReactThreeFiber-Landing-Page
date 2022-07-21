@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 
 import "./App.css";
 
@@ -22,8 +22,12 @@ function Box(props) {
     const [hue, setHue] = useState(100);
     const [clicked, setClicked] = useState(false);
 
+    const { viewport } = useThree();
+
     useFrame((state) => {
         const curr = box.current;
+
+        // rotate in x & z axes
         curr.position.z = THREE.MathUtils.lerp(
             curr.position.z, clicked ? 1 : 0, 0.125
         )
@@ -31,11 +35,23 @@ function Box(props) {
         curr.rotation.x = rotator;
         curr.rotation.z = state.clock.elapsedTime;
 
+        // set colour
         const newHue = THREE.MathUtils.lerp(
             hue, clicked ? END_HUE : INIT_HUE, 0.125
         )
         setHue(newHue);
-        console.log(hue);
+
+        //loop vertically
+        curr.position.y += 0.1;
+        if (curr.position.y > viewport.height / 1.5) {
+            // set at bottom
+            curr.position.y = -viewport.height / 1.5;
+
+            console.log(viewport.width)
+            // randomise coords
+            curr.position.x = (Math.random() * viewport.width) - viewport.width / 2;
+            console.log(curr.position.x)
+        }
     })
 
     return(
