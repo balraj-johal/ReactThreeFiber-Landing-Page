@@ -3,19 +3,25 @@ import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 
-import "./App.css";
+import "./styles/App.css";
+import Typography from "./components/Typography";
 
 export default function App() {
     return (
-        <Canvas>
-            <Box />
-        </Canvas>
+        <>
+            <Typography />
+            <Canvas>
+                <Box />
+            </Canvas>
+        </>
     );
 }
 
 
 const INIT_HUE = 200;
 const END_HUE = 250;
+
+const FLOAT_SPEED = 0.05;
 
 function Box(props) {
     const box = useRef();
@@ -42,15 +48,12 @@ function Box(props) {
         setHue(newHue);
 
         //loop vertically
-        curr.position.y += 0.1;
+        curr.position.y += FLOAT_SPEED;
         if (curr.position.y > viewport.height / 1.5) {
-            // set at bottom
+            // set to bottom
             curr.position.y = -viewport.height / 1.5;
-
-            console.log(viewport.width)
             // randomise coords
             curr.position.x = (Math.random() * viewport.width) - viewport.width / 2;
-            console.log(curr.position.x)
         }
     })
 
