@@ -1,66 +1,53 @@
-import React, { useRef, useState } from "react";
+import React, {  } from "react";
+import { Canvas } from "@react-three/fiber";
+import { Environment } from "@react-three/drei";
+import { 
+    DepthOfField, 
+    EffectComposer, 
+    Noise, 
+    Vignette 
+} from "@react-three/postprocessing";
 
-import * as THREE from "three";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-
+// css
 import "./styles/App.css";
-import Typography from "./components/Typography";
 
-export default function App() {
+// components
+import Typography from "./components/Typography";
+import Balloon from "./components/Balloon";
+
+export default function App({ count = 20 }) {
+    const BALLOONS_ARRAY = new Array(count).fill("");
+
     return (
         <>
             <Typography />
-            <Canvas>
-                <Box />
+            {/* set alpha to false for EffectComposer compatibility */}
+            <Canvas gl={{ alpha: false }} camera={{ near: 0.001, far: 50 }} >
+                {/* removing alpha means we need to add bg color in three
+                    not in css */}
+                <color attach="background" args={["#FBFDF7"]} />
+
+                {/* LIGHTING */}
+                <ambientLight />
+                <Environment preset="apartment" />
+
+                {/* POSTPROCESSING */}
+                <EffectComposer>
+                    <Noise opacity={0.1} />
+                    <DepthOfField 
+                        target={[0,0,10]}
+                        focalLength={0.025} 
+                        bokehScale={8} 
+                        height={700} 
+                    />
+                    <Vignette eskil={false} offset={0.1} darkness={0.25} />
+                </EffectComposer>
+
+                {/* BALLOONS */}
+                { BALLOONS_ARRAY.map((elem, index) => (
+                    <Balloon key={index} z={-Math.random() * (index * 2)} />
+                )) }
             </Canvas>
         </>
     );
-}
-
-
-const INIT_HUE = 200;
-const END_HUE = 250;
-
-const FLOAT_SPEED = 0.05;
-
-function Box(props) {
-    const box = useRef();
-    const [hue, setHue] = useState(100);
-    const [clicked, setClicked] = useState(false);
-
-    const { viewport } = useThree();
-
-    useFrame((state) => {
-        const curr = box.current;
-
-        // rotate in x & z axes
-        curr.position.z = THREE.MathUtils.lerp(
-            curr.position.z, clicked ? 1 : 0, 0.125
-        )
-        const rotator = Math.sin(state.clock.elapsedTime) * Math.PI;
-        curr.rotation.x = rotator;
-        curr.rotation.z = state.clock.elapsedTime;
-
-        // set colour
-        const newHue = THREE.MathUtils.lerp(
-            hue, clicked ? END_HUE : INIT_HUE, 0.125
-        )
-        setHue(newHue);
-
-        //loop vertically
-        curr.position.y += FLOAT_SPEED;
-        if (curr.position.y > viewport.height / 1.5) {
-            // set to bottom
-            curr.position.y = -viewport.height / 1.5;
-            // randomise coords
-            curr.position.x = (Math.random() * viewport.width) - viewport.width / 2;
-        }
-    })
-
-    return(
-        <mesh position={[0,0,0]} ref={box} onClick={() => { setClicked(!clicked) }}>
-            <boxGeometry />
-            <meshBasicMaterial color={`hsl(${hue}, 100%, 50%)`} />
-        </mesh>
-    )
 }
