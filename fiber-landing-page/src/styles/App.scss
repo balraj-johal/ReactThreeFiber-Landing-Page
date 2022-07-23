@@ -1,10 +1,15 @@
 @import "./colours";
 @import "./fonts";
 
+$offset: 100px;
+
 #root, html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  
+  // for use in calc functions
+  --offset: $offset;
 }
 
 #root {
@@ -12,7 +17,6 @@
 }
 
 
-$offset: 50px;
 #typography {
   position: absolute;
   top: 0;
@@ -21,50 +25,157 @@ $offset: 50px;
   height: 100%;
   z-index: 10;
 
+  overflow: hidden;
+
   pointer-events: none;
   background-color: transparent;
   font-family: 'Inter', sans-serif;
 
   #description {
     position: absolute;
-    right: $offset;
-    bottom: $offset;
+    // bottom: $offset;
     margin-right: 50px;
-    width: 25%;
+    transition: all 200ms;
     font-weight: bold;
-    font-size: 20px;
+    display: flex;
+    justify-content: end;
+    margin-bottom: 5px;
   }
 
   #titles {
     position: absolute;
-    bottom: $offset;
-    left: $offset;
     display: flex;
     flex-direction: column-reverse;
+    transition: all 200ms;
 
     h1, h2, h3 {
       margin: 5px;
     }
 
-    h3 {
-      font-size: 24px;
-      line-height: 24px;
-      letter-spacing: -2px;
-      margin-bottom: 0px;
-    }
-    h2 {
-      font-size: 64px;
-      line-height: 64px;
-      letter-spacing: -2px;
-      margin-bottom: 12.5px;
-    }
+    // h3 {
+    //   font-size: 24px;
+    //   line-height: 24px;
+    //   letter-spacing: -1px;
+    //   margin-bottom: 0px;
+    // }
+    // h2 {
+    //   font-size: 64px;
+    //   line-height: 64px;
+    //   letter-spacing: -2px;
+    //   margin-bottom: 12.5px;
+    // }
     h1 {
-      letter-spacing: -5px;
-      line-height: 170px;
-      font-size: 225px;
+    //   letter-spacing: -5px;
+    //   line-height: 170px;
+    //   font-size: 225px;
       font-weight: bold;
       color: $red;
-      margin-left: -5px;
+    //   margin-left: -5px;
     }
+  }
+}
+
+@media (max-width: 900px) {
+  $offset: 25px;
+  #description {
+    width: calc(100% - 55px);
+    padding-left: $offset;
+    padding-right: $offset;
+    bottom: $offset;
+    font-size: 14px;
+  }
+
+  #titles {
+    top: $offset;
+    left: $offset;
+  }
+
+  h3 {
+    font-size: 16px;
+    line-height: 10px;
+    letter-spacing: -1px;
+    margin-bottom: 0px;
+  }
+  h2 {
+    font-size: 24px;
+    line-height: 24px;
+    letter-spacing: -2px;
+    margin-bottom: 14px;
+  }
+  h1 {
+    letter-spacing: -5px;
+    line-height: 72px;
+    font-size: 92px;
+    margin-left: -5px;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1400px) {
+  $offset: 50px;
+
+  #description {
+    width: calc(100% - 100px);
+    padding-left: $offset;
+    padding-right: $offset;
+    bottom: $offset;
+    font-size: 20px;
+  }
+
+  #titles {
+    top: $offset;
+    left: $offset;
+  }
+  
+  h3 {
+    font-size: 24px;
+    line-height: 14px;
+    letter-spacing: -1px;
+    margin-bottom: 0px;
+  }
+  h2 {
+    font-size: 64px;
+    line-height: 64px;
+    letter-spacing: -2px;
+    margin-bottom: 12.5px;
+  }
+  h1 {
+    letter-spacing: -5px;
+    line-height: 200px;
+    font-size: 225px;
+    margin-left: -5px;
+  }
+}
+
+@media (min-width: 1400px) {
+  $offset: 100px;
+  #description {
+    width: 25%;
+    right: $offset;
+    bottom: $offset;
+    font-size: 20px;
+  }
+
+  #titles {
+    bottom: $offset;
+    left: $offset;
+  }
+  
+  h3 {
+    font-size: 24px;
+    line-height: 24px;
+    letter-spacing: -1px;
+    margin-bottom: 0px;
+  }
+  h2 {
+    font-size: 64px;
+    line-height: 64px;
+    letter-spacing: -2px;
+    margin-bottom: 12.5px;
+  }
+  h1 {
+    letter-spacing: -5px;
+    line-height: 170px;
+    font-size: 225px;
+    margin-left: -5px;
   }
 }
