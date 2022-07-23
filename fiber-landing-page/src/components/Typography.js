@@ -1,11 +1,22 @@
 import React, {  } from "react";
+import { motion } from "framer-motion";
 
 export default function Typography() {
     return (
-        <div id="typography">
+        <motion.div 
+            id="typography"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ 
+                type: "spring",
+                damping: 25,
+                stiffness: 100,
+                delay: 0.5
+             }}
+        >
             <Titles />
             <Description />
-        </div>
+        </motion.div>
     );
 }
 
