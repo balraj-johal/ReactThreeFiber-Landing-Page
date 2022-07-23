@@ -12,9 +12,9 @@ export default function Typography() {
 function Titles(props) {
     return(
         <div id="titles">
-            <h1>STAR</h1>
+            <h1>STARS</h1>
             <h2>these things floating*</h2>
-            <h3>*these things floating</h3>
+            <h3>*these things really floating</h3>
         </div> 
     )
 }
