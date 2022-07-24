@@ -6,17 +6,17 @@ import React, {  } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 let BalloonSmoothedMesh = React.forwardRef(({ ...props }, ref) => {
-  const { nodes, materials } = useGLTF('/StarBalloon-transformed.glb')
+  const { nodes } = useGLTF('/StarBalloon-transformed.glb')
 
   return (
     <group ref={ref} {...props} dispose={null} >
       <mesh 
         geometry={nodes['Balloon_-_smoothed'].geometry} 
-        scale={[2, 2, 2]}
+        scale={[props.scale, props.scale, props.scale]}
         // material={materials['Balloon.003']} 
       >
         <meshPhysicalMaterial 
-          color={0x8CC7FF} 
+          color={props.colour} 
           roughness={0.2}
           metalness={0.79}
           reflectivity={0.5}

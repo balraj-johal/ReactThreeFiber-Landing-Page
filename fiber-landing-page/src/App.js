@@ -13,7 +13,8 @@ import "./styles/App.css";
 
 // components
 import Typography from "./components/Typography";
-import Balloon from "./components/Balloon";
+import MenuBalloon from "./components/MenuBalloon";
+import FloatingBalloon from "./components/FloatingBalloon";
 
 export default function App({ count = 20 }) {
     const BALLOONS_ARRAY = new Array(count).fill("");
@@ -21,8 +22,12 @@ export default function App({ count = 20 }) {
     return (
         <>
             <Typography />
-            {/* set alpha to false for EffectComposer compatibility */}
-            <Canvas gl={{ alpha: false }} camera={{ near: 0.001, far: 50 }} >
+            <MenuCanvas />
+            <Canvas 
+                gl={{ alpha: false }} 
+                camera={{ near: 0.001, far: 50 }} 
+                style={{ position: "absolute" }} 
+            >
                 {/* removing alpha means we need to add bg color in three
                     not in css */}
                 <color attach="background" args={["#FBFDF7"]} />
@@ -45,9 +50,35 @@ export default function App({ count = 20 }) {
 
                 {/* BALLOONS */}
                 { BALLOONS_ARRAY.map((elem, index) => (
-                    <Balloon key={index} z={-Math.random() * (index * 2)} />
+                    <FloatingBalloon 
+                        key={index} 
+                        z={-Math.random() * (index * 2)} 
+                        color={0x8CC7FF}
+                        scale={1.5}
+                    />
                 )) }
             </Canvas>
         </>
     );
+}
+
+function MenuCanvas(props) {
+    return(
+        <Canvas 
+            gl={{ alpha: true }} 
+            camera={{ near: 0.001, far: 50 }} 
+            style={{
+                position: "absolute",
+                zIndex: 1,
+            }}  
+        >
+            <ambientLight />
+            <Environment preset="sunset" />
+            <MenuBalloon 
+                z={1} 
+                scale={0.6}
+                colour={0x9C1822} 
+            />
+        </Canvas>
+    )
 }

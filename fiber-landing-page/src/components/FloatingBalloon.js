@@ -7,7 +7,7 @@ import { getRandomXPos } from "../utils/threejs-utils";
 import BalloonSmoothedMesh from "./BalloonSmoothedMesh";
 
 const FLOAT_SPEED = 0.015;
-function Balloon(props) {
+function FloatingBalloon(props) {
     const balloon = useRef();
     const { viewport, camera } = useThree();
     const { width, height } = viewport.getCurrentViewport(camera, [0 , 0, props.z]);
@@ -19,6 +19,7 @@ function Balloon(props) {
     }
 
     useEffect(() => {
+        if (!balloon.current) return;
         // randomise coords
         balloon.current.position.y = (Math.random() * height) - height / 2;
         balloon.current.position.x = getRandomXPos(width);
@@ -48,10 +49,10 @@ function Balloon(props) {
     })
 
     return(
-        <Suspense>
-            <BalloonSmoothedMesh ref={balloon} />
+        <Suspense fallback={null}>
+            <BalloonSmoothedMesh ref={balloon} colour={props.color} scale={props.scale} />
         </Suspense>
     )
 }
 
-export default Balloon;
+export default FloatingBalloon;
