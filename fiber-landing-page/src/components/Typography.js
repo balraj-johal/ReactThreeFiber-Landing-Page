@@ -11,7 +11,7 @@ export default function Typography() {
                 type: "spring",
                 damping: 25,
                 stiffness: 100,
-                delay: 0.5
+                delay: 1
              }}
         >
             <Titles />
