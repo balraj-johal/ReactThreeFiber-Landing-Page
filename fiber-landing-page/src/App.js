@@ -33,7 +33,7 @@ function MenuCanvas() {
             style={{ position: "absolute", zIndex: 11 }}  
         >
             <Lighting hdri="city" />
-            <Menu z={1} scale={0.6} colour={0x9C1822} />
+            <Menu z={1} scale={0.6} color={0x9C1822} />
         </Canvas>
     )
 }

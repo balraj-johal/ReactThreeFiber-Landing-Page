@@ -5,7 +5,7 @@ import { useSpring } from 'framer-motion';
 // utils
 import { getRandomXPos } from "../utils/threejs-utils";
 
-import BalloonMesh from "./BalloonMesh";
+import Balloon from './Balloon';
 
 const FLOAT_SPEED = 0.015;
 function FloatingBalloon(props) {
@@ -68,19 +68,32 @@ function FloatingBalloon(props) {
     useEffect(() => {
         setTimeout(() => {
             spring.set(1);
-        }, 100)
+            console.log("opaq")
+        }, 200)
         spring.onChange(latest => {
             setOpacity(latest);
         })
     }, [])
 
+    const PHYSICAL_MATERIAL = <meshPhysicalMaterial 
+            color={props.color} 
+            roughness={0.2}
+            metalness={0.79}
+            reflectivity={0.5}
+            clearcoat={0.57}
+            clearcoatRoughness={0.5}
+            transparent={true}
+            opacity={props.opacity}
+        />;
+
     return(
-        <Suspense fallback={null}>
-            <BalloonMesh 
+        <Suspense fallback={null} >
+            <Balloon
                 ref={balloon} 
-                colour={props.color} 
+                color={props.color} 
                 scale={props.scale} 
                 opacity={opacity} 
+                material={PHYSICAL_MATERIAL}
             />
         </Suspense>
     )

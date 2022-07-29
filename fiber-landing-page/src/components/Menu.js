@@ -8,10 +8,11 @@ import React, {
 import { useFrame, useThree } from "@react-three/fiber";
 import MenuLink from './MenuLink';
 
-import BalloonMeshAnimated from "./BalloonMeshAnimated";
+import { motion } from "framer-motion-3d";
 import { Sphere } from '@react-three/drei';
 import * as THREE from "three";
 import { useSpring } from 'framer-motion';
+import Balloon from './Balloon';
 
 function Menu(props) {
     const balloon = useRef();
@@ -103,17 +104,55 @@ function Menu(props) {
         if (menuWipeScale > 0.1) balloon.current.rotation.y += delta * 1;
     })
 
+    const [animVariants, setAnimVariants] = useState({
+        "initial" : {
+            x: balloonData.initial?.x,
+            y: balloonData.initial?.y 
+        },
+        "animated" : { 
+            x: balloonData.target?.x,
+            y: balloonData.target?.y 
+        },
+    });
+    useEffect(() => {
+        setAnimVariants({
+            "initial" : { 
+                x: balloonData.initial?.x, 
+                y: balloonData.initial?.y 
+            },
+            "animated" : { 
+                x: balloonData.target?.x, 
+                y: balloonData.target?.y 
+            },
+        });
+    }, [balloonData]);
+
+    const BASIC_MATERIAL = <meshBasicMaterial
+            color={props.color} 
+            roughness={0.2}
+            metalness={0.79}
+            reflectivity={0.5}
+            clearcoat={0.57}
+            clearcoatRoughness={0.5}
+            transparent={true}
+            opacity={1}
+        />;
+
     return(
         <Suspense fallback={null}>
-            <BalloonMeshAnimated
-                ref={balloon} 
-                colour={menuWipeScale < 0.01 ? props.colour : 0xFFFFFF} 
-                scale={props.scale} 
-                onClick={handleClick}
-                animating={menuOpen}
-                initial={balloonData.initial}
-                target={balloonData.target}
+            <motion.group 
+                initial="hidden"
+                animate={menuOpen ? "animated" : "initial"}
+                variants={animVariants}
+                transition={{ ease: "anticipate" }}
             >
+                <Balloon
+                    material={BASIC_MATERIAL} 
+                    ref={balloon}
+                    color={menuWipeScale < 0.01 ? props.color : 0xFFFFFF} 
+                    scale={props.scale} 
+                    onClick={handleClick}
+                />
                 <MenuLink 
                     animating={menuOpen} 
                     text="www.balraj.cool"
@@ -126,11 +165,11 @@ function Menu(props) {
                     onClick={handleClick}
                 >
                     <meshBasicMaterial 
-                        color={props.colour} 
+                        color={props.color} 
                         side={THREE.DoubleSide} 
                     />
                 </Sphere>
-            </BalloonMeshAnimated>
+            </motion.group>
         </Suspense>
     )
 }
