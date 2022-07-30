@@ -1,4 +1,4 @@
-import React, {  } from "react";
+import React, { useState } from "react";
 
 import { Canvas } from "@react-three/fiber";
 // import { View } from "@react-three/drei";
@@ -10,7 +10,7 @@ import "./styles/App.css";
 import Typography from "./components/Typography";
 import Lighting from "./components/Lighting";
 import PostProcessing from "./components/PostProcessing";
-import Menu from "./components/Menu";
+import MenuToggle from "./components/MenuToggle";
 import FloatingBalloon from "./components/FloatingBalloon";
 
 export default function App({ count = 20 }) {
@@ -18,14 +18,38 @@ export default function App({ count = 20 }) {
 
     return (
         <>
-            <MenuCanvas />
+            <Menu />
             <Typography />
-            <BGCanvas balloons={BALLOONS_ARRAY} />
+            <BackgroundStars balloons={BALLOONS_ARRAY} />
         </>
     );
 }
 
-function MenuCanvas() {
+function Menu() {
+    const [ready, setReady] = useState(false);
+
+    return(
+        <>
+            <MenuUI ready={ready} />
+            <MenuCanvas setReady={setReady} />
+        </>
+    )
+}
+function MenuUI(props) {
+    return(
+        <div 
+            id="menu-ui" 
+            style={{ opacity: props.ready ? "1" : "0", }}
+        >
+            <div id="titles">
+                {/* <h2>www.balraj.cool</h2> */}
+                <a href="https://www.balraj.cool">www.balraj.cool</a>
+                <h3>made by:</h3>
+            </div> 
+        </div>
+    )
+}
+function MenuCanvas(props) {
     return(
         <Canvas 
             gl={{ alpha: true }} 
@@ -33,12 +57,17 @@ function MenuCanvas() {
             style={{ position: "absolute", zIndex: 11 }}  
         >
             <Lighting hdri="city" />
-            <Menu z={1} scale={0.6} color={0x9C1822} />
+            <MenuToggle 
+                z={1} 
+                scale={0.6} 
+                color={0x9C1822} 
+                setReady={props.setReady} 
+            />
         </Canvas>
     )
 }
 
-function BGCanvas(props) {
+function BackgroundStars(props) {
     return(
         <Canvas 
             camera={{ near: 0.001, far: 50 }} 

@@ -14,6 +14,63 @@
   background-color: #FBFDF7;
 }
 
+#menu-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  pointer-events: none;
+}
+
+#menu-ui h2, #menu-ui h3, #menu-ui a {
+  color: white;
+  font-weight: bold;
+}
+
+#menu-ui #titles {
+  pointer-events: all;
+}
+
+#description {
+  position: absolute;
+  margin-right: 50px;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+  font-weight: bold;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin-bottom: 5px;
+  font-family: 'Inter', sans-serif;
+}
+
+#titles {
+  font-family: 'Inter', sans-serif;
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+}
+
+#titles h1, #titles h2, #titles h3, #titles a {
+  margin: 5px;
+}
+
+#titles h1 {
+  font-weight: bold;
+}
+
 #typography {
   position: absolute;
   top: 0;
@@ -38,7 +95,7 @@
   display: flex;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
-          justify-content: end;
+          justify-content: flex-end;
   margin-bottom: 5px;
 }
 
@@ -55,7 +112,7 @@
   transition: all 200ms;
 }
 
-#typography #titles h1, #typography #titles h2, #typography #titles h3 {
+#typography #titles h1, #typography #titles h2, #typography #titles h3, #typography #titles a {
   margin: 5px;
 }
 
@@ -82,7 +139,7 @@
     letter-spacing: -1px;
     margin-bottom: 0px;
   }
-  h2 {
+  h2, a {
     font-size: 24px;
     line-height: 24px;
     letter-spacing: -2px;
@@ -114,7 +171,7 @@
     letter-spacing: -1px;
     margin-bottom: 0px;
   }
-  h2 {
+  h2, a {
     font-size: 64px;
     line-height: 64px;
     letter-spacing: -2px;
@@ -145,7 +202,7 @@
     letter-spacing: -1px;
     margin-bottom: 0px;
   }
-  h2 {
+  h2, a {
     font-size: 64px;
     line-height: 64px;
     letter-spacing: -2px;

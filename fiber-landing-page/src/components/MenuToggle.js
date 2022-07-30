@@ -5,16 +5,17 @@ import React, {
     useRef, 
     useState 
 } from 'react';
-import { useFrame, useThree } from "@react-three/fiber";
-import MenuLink from './MenuLink';
 
-import { motion } from "framer-motion-3d";
-import { Sphere } from '@react-three/drei';
+import { useFrame, useThree } from "@react-three/fiber";
+import { Circle } from '@react-three/drei';
 import * as THREE from "three";
+
 import { useSpring } from 'framer-motion';
+import { motion } from "framer-motion-3d";
+
 import Balloon from './Balloon';
 
-function Menu(props) {
+function MenuToggle(props) {
     const balloon = useRef();
     const screenWipe = useRef();
     const { viewport, camera } = useThree();
@@ -28,8 +29,8 @@ function Menu(props) {
         height: initHeight
     });
     const [balloonData, setBalloonData] = useState({
-        initial: { x: 1, y: 1, },
-        target: { x: 1, y: 1, }
+        initial: { x: 1, y: 1 },
+        target: { x: 1, y: 1 }
     })
 
     let handleClick = () => {
@@ -45,7 +46,11 @@ function Menu(props) {
         // get balloon bounds
         balloon.current.children[0].geometry.computeBoundingBox();
         const bounds = balloon.current.children[0].geometry.boundingBox;
-        const offset = bounds.max.x * 1;
+        let offset = bounds.max.x;
+        // alert(window.innerWidth);
+        if (window.innerWidth < 1200) {
+            offset = offset * 0.75;
+        }
         // update animation data
         setBalloonData({
             initial: {
@@ -104,6 +109,14 @@ function Menu(props) {
         if (menuWipeScale > 0.1) balloon.current.rotation.y += delta * 1;
     })
 
+    useEffect(() => {
+        if (menuWipeScale > 0.9 * Math.max(viewport.width, viewport.height)) {
+            props.setReady(true);
+        } else {
+            props.setReady(false);
+        }
+    }, [menuWipeScale]);
+
     const [animVariants, setAnimVariants] = useState({
         "initial" : {
             x: balloonData.initial?.x,
@@ -125,10 +138,12 @@ function Menu(props) {
                 y: balloonData.target?.y 
             },
         });
+        screenWipe.current.position.x = balloonData.initial?.x;
+        screenWipe.current.position.y = balloonData.initial?.y;
     }, [balloonData]);
 
-    const BASIC_MATERIAL = <meshBasicMaterial
-            color={props.color} 
+    let BASIC_MATERIAL = <meshBasicMaterial
+            color={menuWipeScale < 0.1 ? props.color : 0xFFFFFF} 
             roughness={0.2}
             metalness={0.79}
             reflectivity={0.5}
@@ -149,29 +164,24 @@ function Menu(props) {
                 <Balloon
                     material={BASIC_MATERIAL} 
                     ref={balloon}
-                    color={menuWipeScale < 0.01 ? props.color : 0xFFFFFF} 
                     scale={props.scale} 
                     onClick={handleClick}
                 />
-                <MenuLink 
-                    animating={menuOpen} 
-                    text="www.balraj.cool"
-                    link="https://www.balraj.cool"
-                />
-                <Sphere 
+                <Circle 
+                    args={[1.75, 100]} // radius, segments
                     ref={screenWipe} 
                     scale={[menuWipeScale, menuWipeScale, menuWipeScale]}
-                    position={[1.15,0.5,0]}
+                    position={[1.15, 0.5, 0]}
                     onClick={handleClick}
                 >
                     <meshBasicMaterial 
                         color={props.color} 
                         side={THREE.DoubleSide} 
                     />
-                </Sphere>
+                </Circle>
             </motion.group>
         </Suspense>
     )
 }
 
-export default Menu;
+export default MenuToggle;

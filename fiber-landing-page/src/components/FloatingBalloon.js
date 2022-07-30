@@ -26,6 +26,21 @@ function FloatingBalloon(props) {
     const { width, height } = 
         viewport.getCurrentViewport(camera, [0 , 0, props.z]);
 
+    let updateBalloonPosition = (height, zRotation, zPosition, width) => {
+        if (!balloon.current) return setTimeout(() => {
+            updateBalloonPosition(height, zRotation, zPosition, width);
+        }, 10);
+        // randomise coords
+        balloon.current.position.y = (Math.random() * height) - height / 2;
+        balloon.current.position.x = getRandomXPos(width);
+        // randomise initial rotation
+        balloon.current.rotation.y = Math.random() * 2 * Math.PI;
+        balloon.current.position.z = zPosition;
+        // rotate to face camera
+        balloon.current.rotation.x = Math.PI / 2;
+        // initialise z axis rotation
+        balloon.current.rotation.z = zRotation;
+    }
     useEffect(() => {
         updateBalloonPosition(height, animData.current?.rotationZ, props.z, width);
     }, [height, animData.current?.rotationZ, props.z, width])
@@ -47,33 +62,17 @@ function FloatingBalloon(props) {
         }
     })
 
-    let updateBalloonPosition = (height, zRotation, zPosition, width) => {
-        if (!balloon.current) return setTimeout(() => {
-            updateBalloonPosition(height, zRotation, zPosition, width);
-        }, 10);
-        // randomise coords
-        balloon.current.position.y = (Math.random() * height) - height / 2;
-        balloon.current.position.x = getRandomXPos(width);
-        // randomise initial rotation
-        balloon.current.rotation.y = Math.random() * 2 * Math.PI;
-        balloon.current.position.z = zPosition;
-        // rotate to face camera
-        balloon.current.rotation.x = Math.PI / 2;
-        // initialise z axis rotation
-        balloon.current.rotation.z = zRotation;
-    }
 
     // fade opacity of balloons in
     const spring = useSpring(0);
     useEffect(() => {
         setTimeout(() => {
             spring.set(1);
-            console.log("opaq")
         }, 200)
         spring.onChange(latest => {
             setOpacity(latest);
         })
-    }, [])
+    }, [spring])
 
     const PHYSICAL_MATERIAL = <meshPhysicalMaterial 
             color={props.color} 
