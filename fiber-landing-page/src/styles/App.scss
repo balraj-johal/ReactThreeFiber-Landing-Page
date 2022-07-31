@@ -29,7 +29,7 @@ $offset: 100px;
 #menu-ui {
   h2, h3, a {
     color: white;
-    font-weight: bold;
+    font-weight: 600;
   }
   #titles {
     pointer-events: all;
@@ -40,7 +40,7 @@ $offset: 100px;
   // bottom: $offset;
   margin-right: 50px;
   transition: all 200ms;
-  font-weight: bold;
+  font-weight: 600;
   display: flex;
   justify-content: flex-end;
   margin-bottom: 5px;
@@ -55,11 +55,8 @@ $offset: 100px;
   transition: all 200ms;
 
   h1, h2, h3, a {
+    font-weight: 600;
     margin: 5px;
-  }
-
-  h1 {
-    font-weight: bold;
   }
 }
 
@@ -82,7 +79,7 @@ $offset: 100px;
     // bottom: $offset;
     margin-right: 50px;
     transition: all 200ms;
-    font-weight: bold;
+    font-weight: 600;
     display: flex;
     justify-content: flex-end;
     margin-bottom: 5px;
@@ -99,7 +96,7 @@ $offset: 100px;
     }
 
     h1 {
-      font-weight: bold;
+      font-weight: 600;
       color: $red;
     }
   }

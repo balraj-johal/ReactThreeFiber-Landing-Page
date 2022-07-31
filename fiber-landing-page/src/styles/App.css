@@ -26,7 +26,7 @@
 
 #menu-ui h2, #menu-ui h3, #menu-ui a {
   color: white;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 #menu-ui #titles {
@@ -38,7 +38,7 @@
   margin-right: 50px;
   -webkit-transition: all 200ms;
   transition: all 200ms;
-  font-weight: bold;
+  font-weight: 600;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -64,11 +64,8 @@
 }
 
 #titles h1, #titles h2, #titles h3, #titles a {
+  font-weight: 600;
   margin: 5px;
-}
-
-#titles h1 {
-  font-weight: bold;
 }
 
 #typography {
@@ -89,7 +86,7 @@
   margin-right: 50px;
   -webkit-transition: all 200ms;
   transition: all 200ms;
-  font-weight: bold;
+  font-weight: 600;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -117,7 +114,7 @@
 }
 
 #typography #titles h1 {
-  font-weight: bold;
+  font-weight: 600;
   color: #9C1822;
 }
 
