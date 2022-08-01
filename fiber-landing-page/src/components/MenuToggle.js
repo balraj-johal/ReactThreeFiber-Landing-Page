@@ -37,7 +37,7 @@ function MenuToggle(props) {
         setMenuOpen(!menuOpen);
     }
 
-    let updatePosition = (viewportData, zPosition) => {
+    let updatePosition = useCallback((viewportData, zPosition) => {
         // keep refreshing function if target balloon hasn't been mounted yet
         if (!balloon.current) return setTimeout(() => {
             updatePosition(viewportData, zPosition);
@@ -49,7 +49,7 @@ function MenuToggle(props) {
         let offset = bounds.max.x;
         // alert(window.innerWidth);
         if (window.innerWidth < 1200) {
-            offset = offset * 0.75;
+            offset = offset * 0.5;
         }
         // update animation data
         setBalloonData({
@@ -64,11 +64,11 @@ function MenuToggle(props) {
         })
         // rotate to face camera
         balloon.current.rotation.x = Math.PI / 2;
-    }
+    }, [window.innerWidth])
 
     useEffect(() => {
         updatePosition(viewportData, props.z);
-    }, [viewportData, props.z])
+    }, [viewportData, props.z, updatePosition])
 
 
     let handleResize = useCallback(() => {
@@ -102,20 +102,21 @@ function MenuToggle(props) {
         return () => {
             spring.clearListeners();
         }
-    }, [menuOpen])
+    }, [menuOpen, spring, viewport])
     
     // rotate menu balloon
     useFrame((state, delta) => {
         if (menuWipeScale > 0.1) balloon.current.rotation.y += delta * 1;
     })
 
+    const { setReady } = props;
     useEffect(() => {
         if (menuWipeScale > 0.9 * Math.max(viewport.width, viewport.height)) {
-            props.setReady(true);
+            setReady(true);
         } else {
-            props.setReady(false);
+            setReady(false);
         }
-    }, [menuWipeScale]);
+    }, [menuWipeScale, viewport, setReady]);
 
     const [animVariants, setAnimVariants] = useState({
         "initial" : {

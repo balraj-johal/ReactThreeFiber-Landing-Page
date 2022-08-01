@@ -7,9 +7,6 @@ $offset: 100px;
   height: 100%;
   width: 100%;
   overflow: hidden;
-  
-  // for use in calc functions
-  --offset: $offset;
 }
 
 #root {

@@ -39,10 +39,9 @@ function MenuUI(props) {
     return(
         <div 
             id="menu-ui" 
-            style={{ opacity: props.ready ? "1" : "0", }}
+            style={{ opacity: props.ready ? "1" : "0" }}
         >
             <div id="titles">
-                {/* <h2>www.balraj.cool</h2> */}
                 <a href="https://www.balraj.cool">www.balraj.cool</a>
                 <h3>made by:</h3>
             </div> 
@@ -54,12 +53,17 @@ function MenuCanvas(props) {
         <Canvas 
             gl={{ alpha: true }} 
             camera={{ near: 0.001, far: 100 }} 
-            style={{ position: "absolute", zIndex: 11 }}  
+            style={{ 
+                position: "absolute", 
+                zIndex: 11, 
+                width: "101%", 
+                height: "101%" 
+            }}  
         >
             <Lighting hdri="city" />
             <MenuToggle 
                 z={1} 
-                scale={0.6} 
+                scale={window.innerWidth > 900 ? 0.6 : 0.45} 
                 color={0x9C1822} 
                 setReady={props.setReady} 
             />
